@@ -3,6 +3,63 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Announce;
+
+/**
+ * @OA\Get(
+ *   tags={"announce"},
+ *   path="/api/announce",
+ *   summary="announce",
+ *   @OA\Response(
+ *     response=200,
+ *     description="OK",
+ *     @OA\JsonContent(
+ *       allOf={
+ *         @OA\Schema(
+ *           @OA\Property(
+ *             property="data",
+ *             type="array",
+ *             @OA\Items(
+ *               ref="#/components/schemas/Announce",
+ *             ),
+ *           ),
+ *         ),
+ *       },
+ *     ),
+ *   ),
+ * ),
+ * @OA\Post(
+ *   tags={"announce"},
+ *   path="/api/announce",
+ *   summary="announce",
+ *   @OA\RequestBody(
+ *     required=true,
+ *     @OA\MediaType(
+ *       mediaType="application/json",
+ *       @OA\Schema(
+ *         @OA\Property(
+ *           property="title",
+ *           type="string",
+ *           nullable=false,
+ *         ),
+ *         @OA\Property(
+ *           property="content",
+ *           type="string",
+ *           nullable=false,
+ *         ),
+ *         required={"title", "content"},
+ *       ),
+ *     ),
+ *   ),
+ *   @OA\Response(
+ *     response=200,
+ *     description="OK",
+ *     @OA\JsonContent(
+ *       ref="#/components/schemas/Announce",
+ *     ),
+ *   ),
+ * )
+ */
 
 class AnnounceController extends Controller
 {
@@ -13,7 +70,7 @@ class AnnounceController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(["status" => true, "data" => Announce::paginate(15)]);
     }
 
     /**
@@ -24,7 +81,8 @@ class AnnounceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $announce = Announce::create($request->all());
+        return response()->json(["status" => true, "data" => $announce]);
     }
 
     /**
@@ -35,7 +93,7 @@ class AnnounceController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(["status" => true, "data" => Announce::find($id)]);
     }
 
     /**
@@ -47,7 +105,10 @@ class AnnounceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $announce = Announce::find($id);
+        $announce->fill($request->all());
+        $announce->save();
+        return response()->json(["status" => true, "data" => $announce]);
     }
 
     /**
@@ -58,6 +119,8 @@ class AnnounceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $announce = Announce::find($id);
+        $announce->delete();
+        return response()->json(["status" => true]);
     }
 }
