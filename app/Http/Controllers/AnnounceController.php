@@ -81,6 +81,12 @@ class AnnounceController extends Controller
      */
     public function store(Request $request)
     {
+
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required|max:65535',
+        ]);
+
         $announce = Announce::create($request->all());
         return response()->json(["status" => true, "data" => $announce]);
     }
@@ -93,7 +99,7 @@ class AnnounceController extends Controller
      */
     public function show($id)
     {
-        return response()->json(["status" => true, "data" => Announce::find($id)]);
+        return response()->json(["status" => true, "data" => Announce::findOrFail($id)]);
     }
 
     /**
@@ -105,7 +111,12 @@ class AnnounceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $announce = Announce::find($id);
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required|max:65535',
+        ]);
+
+        $announce = Announce::findOrFail($id);
         $announce->fill($request->all());
         $announce->save();
         return response()->json(["status" => true, "data" => $announce]);
@@ -119,7 +130,7 @@ class AnnounceController extends Controller
      */
     public function destroy($id)
     {
-        $announce = Announce::find($id);
+        $announce = Announce::findOrFail($id);
         $announce->delete();
         return response()->json(["status" => true]);
     }
