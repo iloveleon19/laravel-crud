@@ -19,7 +19,12 @@
 6. php artisan key:generate
 7. php artisan migrate
 8. 打開設定好的網址，首頁即為本次的前端服務
-9. /api/documentation 為 `swagger` URL
+
+swagger URL
+===
+
+/api/documentation
+---
 
 Api 介接方法
 ===
