@@ -1,64 +1,212 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+環境介紹
+===
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+請先建立以下環境或是可以執行 laravel 8 的環境
 
-## About Laravel
+* php: 8.0
+* mysql: 5.7
+* laravel: 8
+* vue:2
+* nginx: 1.16
+* composer
+* npm
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+1. git clone 本專案
+2. composer install
+3. npm install
+4. 複製 .env.example 命名為 .env
+5. 修改 .env 檔內的 mysql 設定
+6. php artisan key:generate
+7. php artisan migrate
+8. 打開設定好的網址，首頁即為本次的前端服務
+9. /api/documentation 為 `swagger` URL
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+Api 介接方法
+===
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+取得所有 Announce  資料
+---
+#### Api Url: /api/announce
+#### Api 呼叫方式: GET
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+|Header 參數|格式|必填|說明
+|---|---|---|---|
+|Content-Type|string|Required|application/json 傳送 json|
+|Accept|string|Required|application/json 回傳 json|
 
-## Laravel Sponsors
+|Query 參數|格式|必填|說明
+|---|---|---|---|
+|page|number||分頁參數|
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Response
+```
+{
+    "status": true,
+    "data": {
+        "current_page": 1,
+        "data": [
+            {
+                "id": 4,
+                "title": "tes",
+                "content": "test1",
+                "created_at": "2022-06-08T07:07:04.000000Z",
+                "updated_at": "2022-06-08T07:07:48.000000Z"
+            },
+            {
+                "id": 5,
+                "title": "aaa",
+                "content": "aaa",
+                "created_at": "2022-06-08T07:33:04.000000Z",
+                "updated_at": "2022-06-08T07:33:24.000000Z"
+            },
+            {
+                "id": 6,
+                "title": "test",
+                "content": "test",
+                "created_at": "2022-06-08T07:57:13.000000Z",
+                "updated_at": "2022-06-08T07:57:13.000000Z"
+            }
+        ],
+        "first_page_url": "http://laravel-crud.local/api/announce?page=1",
+        "from": 1,
+        "last_page": 1,
+        "last_page_url": "http://laravel-crud.local/api/announce?page=1",
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "active": false
+            },
+            {
+                "url": "http://laravel-crud.local/api/announce?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Next &raquo;",
+                "active": false
+            }
+        ],
+        "next_page_url": null,
+        "path": "http://laravel-crud.local/api/announce",
+        "per_page": 15,
+        "prev_page_url": null,
+        "to": 3,
+        "total": 3
+    }
+}
+```
 
-### Premium Partners
+取得 Announce  資料
+---
+#### Api Url: /api/announce/{id}
+#### Api 呼叫方式: GET
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+|Header 參數|格式|必填|說明
+|---|---|---|---|
+|Content-Type|string|Required|application/json 傳送 json|
+|Accept|string|Required|application/json 回傳 json|
 
-## Contributing
+|Path 參數|格式|必填|說明
+|---|---|---|---|
+|{id}|number|Required|要編輯的id|
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Response
+```
+{
+    "status": true,
+    "data": {
+        "title": "test",
+        "content": "test",
+        "updated_at": "2022-06-08T08:15:44.000000Z",
+        "created_at": "2022-06-08T08:15:44.000000Z",
+        "id": 7
+    }
+}
+```
 
-## Code of Conduct
+新增 Announce  資料
+---
+#### Api Url: /api/announce
+#### Api 呼叫方式: POST
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+|Header 參數|格式|必填|說明
+|---|---|---|---|
+|Content-Type|string|Required|application/json 傳送 json|
+|Accept|string|Required|application/json 回傳 json|
 
-## Security Vulnerabilities
+|Body 參數|格式|必填|說明
+|---|---|---|---|
+|title|string|Required|Announce標題|
+|content|string|Required|Announce 內容|
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Response
+```
+{
+    "status": true,
+    "data": {
+        "title": "test",
+        "content": "test",
+        "updated_at": "2022-06-08T08:15:44.000000Z",
+        "created_at": "2022-06-08T08:15:44.000000Z",
+        "id": 7
+    }
+}
+```
 
-## License
+編輯 Announce  資料
+---
+#### Api Url: /api/announce/{id}
+#### Api 呼叫方式: PUT
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+|Header 參數|格式|必填|說明
+|---|---|---|---|
+|Content-Type|string|Required|application/json 傳送 json|
+|Accept|string|Required|application/json 回傳 json|
+
+|Path 參數|格式|必填|說明
+|---|---|---|---|
+|{id}|number|Required|要編輯的id|
+
+|Body 參數|格式|必填|說明
+|---|---|---|---|
+|title|string|Required|Announce標題|
+|content|string|Required|Announce 內容|
+
+Response
+```
+{
+    "status": true,
+    "data": {
+        "title": "test",
+        "content": "test",
+        "updated_at": "2022-06-08T08:15:44.000000Z",
+        "created_at": "2022-06-08T08:15:44.000000Z",
+        "id": 7
+    }
+}
+```
+
+刪除 Announce 資料
+---
+#### Api Url: /api/announce/{id}
+#### Api 呼叫方式: DELETE
+
+|Header 參數|格式|必填|說明
+|---|---|---|---|
+|Content-Type|string|Required|application/json 傳送 json|
+|Accept|string|Required|application/json 回傳 json|
+
+|Path 參數|格式|必填|說明
+|---|---|---|---|
+|{id}|number|Required|要刪除的id|
+
+Response
+```
+{
+    "status": true
+}
+```
