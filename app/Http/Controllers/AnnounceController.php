@@ -9,7 +9,7 @@ use App\Models\Announce;
  * @OA\Get(
  *   tags={"announce"},
  *   path="/api/announce",
- *   summary="announce",
+ *   summary="get all announce",
  *   @OA\Response(
  *     response=200,
  *     description="OK",
@@ -17,11 +17,59 @@ use App\Models\Announce;
  *       allOf={
  *         @OA\Schema(
  *           @OA\Property(
+ *             property="status",
+ *             type="boolean",
+ *           ),
+ *           @OA\Property(
  *             property="data",
- *             type="array",
- *             @OA\Items(
- *               ref="#/components/schemas/Announce",
- *             ),
+ *             allOf={
+ *               @OA\Schema(
+ *                 ref="#/components/schemas/_paginate",
+ *               ),
+ *               @OA\Schema(
+ *                 @OA\Property(
+ *                   property="data",
+ *                   type="array",
+ *                   @OA\Items(
+ *                     ref="#/components/schemas/Announce",
+ *                   ),
+ *                 ),
+ *               ),
+ *             },
+ *           ),
+ *         ),
+ *       },
+ *     ),
+ *   ),
+ * ),
+ * @OA\GET(
+ *   tags={"announce"},
+ *   path="/api/announce/{id}",
+ *   summary="get announce",
+ *   @OA\Parameter(
+ *     description="id",
+ *     in="path",
+ *     name="id",
+ *     required=true,
+ *     @OA\Schema(
+ *       type="integer",
+ *     ),
+ *   ),
+ *   @OA\Response(
+ *     response=200,
+ *     description="OK",
+ *     @OA\JsonContent(
+ *       allOf={
+ *         @OA\Schema(
+ *           @OA\Property(
+ *             property="status",
+ *             type="boolean",
+ *           ),
+ *         ),
+ *         @OA\Schema(
+ *           @OA\Property(
+ *             property="data",
+ *             ref="#/components/schemas/Announce",
  *           ),
  *         ),
  *       },
@@ -31,7 +79,7 @@ use App\Models\Announce;
  * @OA\Post(
  *   tags={"announce"},
  *   path="/api/announce",
- *   summary="announce",
+ *   summary="create announce",
  *   @OA\RequestBody(
  *     required=true,
  *     @OA\MediaType(
@@ -55,7 +103,101 @@ use App\Models\Announce;
  *     response=200,
  *     description="OK",
  *     @OA\JsonContent(
- *       ref="#/components/schemas/Announce",
+ *       allOf={
+ *         @OA\Schema(
+ *           @OA\Property(
+ *             property="status",
+ *             type="boolean",
+ *           ),
+ *         ),
+ *         @OA\Schema(
+ *           @OA\Property(
+ *             property="data",
+ *             ref="#/components/schemas/Announce",
+ *           ),
+ *         ),
+ *       },
+ *     ),
+ *   ),
+ * ),
+ * @OA\PUT(
+ *   tags={"announce"},
+ *   path="/api/announce/{id}",
+ *   summary="edit announce",
+ *   @OA\Parameter(
+ *     description="id",
+ *     in="path",
+ *     name="id",
+ *     required=true,
+ *     @OA\Schema(
+ *       type="integer",
+ *     ),
+ *   ),
+ *   @OA\RequestBody(
+ *     required=true,
+ *     @OA\MediaType(
+ *       mediaType="application/json",
+ *       @OA\Schema(
+ *         @OA\Property(
+ *           property="title",
+ *           type="string",
+ *           nullable=false,
+ *         ),
+ *         @OA\Property(
+ *           property="content",
+ *           type="string",
+ *           nullable=false,
+ *         ),
+ *         required={"title", "content"},
+ *       ),
+ *     ),
+ *   ),
+ *   @OA\Response(
+ *     response=200,
+ *     description="OK",
+ *     @OA\JsonContent(
+ *       allOf={
+ *         @OA\Schema(
+ *           @OA\Property(
+ *             property="status",
+ *             type="boolean",
+ *           ),
+ *         ),
+ *         @OA\Schema(
+ *           @OA\Property(
+ *             property="data",
+ *             ref="#/components/schemas/Announce",
+ *           ),
+ *         ),
+ *       },
+ *     ),
+ *   ),
+ * ),
+ * @OA\DELETE(
+ *   tags={"announce"},
+ *   path="/api/announce/{id}",
+ *   summary="delete announce",
+ *   @OA\Parameter(
+ *     description="id",
+ *     in="path",
+ *     name="id",
+ *     required=true,
+ *     @OA\Schema(
+ *       type="integer",
+ *     ),
+ *   ),
+ *   @OA\Response(
+ *     response=200,
+ *     description="OK",
+ *     @OA\JsonContent(
+ *       allOf={
+ *         @OA\Schema(
+ *           @OA\Property(
+ *             property="status",
+ *             type="boolean",
+ *           ),
+ *         ),
+ *       },
  *     ),
  *   ),
  * )

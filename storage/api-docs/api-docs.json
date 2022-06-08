@@ -25,7 +25,7 @@
                 "tags": [
                     "announce"
                 ],
-                "summary": "announce",
+                "summary": "get all announce",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -35,11 +35,26 @@
                                     "allOf": [
                                         {
                                             "properties": {
+                                                "status": {
+                                                    "type": "boolean"
+                                                },
                                                 "data": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "$ref": "#/components/schemas/Announce"
-                                                    }
+                                                    "allOf": [
+                                                        {
+                                                            "$ref": "#/components/schemas/_paginate"
+                                                        },
+                                                        {
+                                                            "properties": {
+                                                                "data": {
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "$ref": "#/components/schemas/Announce"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    ]
                                                 }
                                             },
                                             "type": "object"
@@ -55,7 +70,7 @@
                 "tags": [
                     "announce"
                 ],
-                "summary": "announce",
+                "summary": "create announce",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -86,7 +101,180 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Announce"
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "boolean"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/Announce"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/announce/{id}": {
+            "get": {
+                "tags": [
+                    "announce"
+                ],
+                "summary": "get announce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "boolean"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/Announce"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "announce"
+                ],
+                "summary": "edit announce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "content"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "nullable": false
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "nullable": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "boolean"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/Announce"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "announce"
+                ],
+                "summary": "delete announce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "boolean"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -97,6 +285,76 @@
     },
     "components": {
         "schemas": {
+            "_paginate": {
+                "title": "_paginate",
+                "description": "_paginate",
+                "properties": {
+                    "current_page": {
+                        "type": "integer"
+                    },
+                    "first_page_url": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "from": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "last_page": {
+                        "type": "integer"
+                    },
+                    "last_page_url": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "links": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "url": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "nullable": true
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "active": {
+                                    "type": "boolean",
+                                    "default": false
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "next_page_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    },
+                    "path": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "pre_page": {
+                        "type": "integer",
+                        "default": 15
+                    },
+                    "prev_page_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    },
+                    "to": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "total": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
             "Announce": {
                 "title": "Announce",
                 "description": "Announce",
